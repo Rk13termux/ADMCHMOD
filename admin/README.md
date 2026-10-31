@@ -5,7 +5,7 @@ CMS con Plantilla Maestra, analíticas de Supabase, leads y publicación
 automatizada por Git.
 
 Interfaz oscura tipo terminal, con los mismos colores del sitio
-(`#00e676`, `#00e5ff`, `#ffd43b`) y cuatro pestañas:
+(`#00e676`, `#00e5ff`, `#ffd43b`) y cinco pestañas:
 
 | Pestaña | Qué hace |
 |---|---|
@@ -357,13 +357,55 @@ admin/
 ├── git_ops.py         # subprocess seguro, estado del repo, publicación
 ├── tabs/
 │   ├── editor.py
+│   ├── content.py
 │   ├── analytics.py
 │   ├── leads.py
 │   └── publish.py
+├── assets/
+│   ├── logo.png       # original del logo
+│   ├── icon.png       # el mismo logo recortado: cabecera e icono de la app
+│   ├── logo.ico       # icono de ventana (Windows)
+│   └── fonts/         # tipografías locales opcionales
 ├── sql/schema.sql
 ├── .env.example
 └── requirements.txt
 ```
+
+### Identidad visual
+
+La cabecera muestra el logo desde `admin/assets`. Flet sirve esa carpeta como
+raíz de recursos (`assets_dir`), así que el panel referencia el archivo por su
+nombre y funciona igual en la ventana de escritorio y en `--web`.
+
+| Archivo | Uso |
+|---|---|
+| `logo.png` | Original que se coloca a mano. Es la fuente de los demás. |
+| `icon.png` | Recorte del original sin el margen transparente. Logo de la cabecera y `assets/icon.png` que usa `flet build` al empaquetar. |
+| `logo.ico` | Icono de la ventana en Windows (`page.window.icon`). |
+
+Si se cambia `logo.png`, hay que regenerar los derivados:
+
+```bash
+python3 - <<'PY'
+from PIL import Image
+
+src = Image.open("admin/assets/logo.png").convert("RGBA")
+mark = src.crop(src.getchannel("A").getbbox())
+side, pad = max(mark.size), round(max(mark.size) * 0.06)
+canvas = Image.new("RGBA", (side + pad * 2, side + pad * 2), (0, 0, 0, 0))
+canvas.alpha_composite(mark, ((canvas.width - mark.width) // 2,
+                              (canvas.height - mark.height) // 2))
+icon = canvas.resize((512, 512), Image.LANCZOS)
+icon.save("admin/assets/icon.png")
+icon.resize((256, 256), Image.LANCZOS).save(
+    "admin/assets/logo.ico", format="ICO",
+    sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)],
+)
+PY
+```
+
+Sin `logo.png` ni `icon.png` la cabecera vuelve a la caja `CX`, y sin
+`logo.ico` se omite el icono de ventana: el panel nunca falla por esto.
 
 ---
 
@@ -387,5 +429,5 @@ admin/
 python3 -m admin --check    # valida configuración, plantilla e interfaz
 ```
 
-El comando construye todo el árbol de controles de las cuatro pestañas sin
+El comando construye todo el árbol de controles de las cinco pestañas sin
 abrir ventana: sirve como prueba de humo en cualquier equipo o en CI.

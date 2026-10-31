@@ -71,6 +71,9 @@ class AdminApp:
             page.window.height = WINDOW_HEIGHT
             page.window.min_width = 1100
             page.window.min_height = 720
+            icon = t.logo_icon()
+            if icon:
+                page.window.icon = icon
         except (AttributeError, RuntimeError):
             # En modo web la ventana no existe: se ignora.
             pass
@@ -98,20 +101,7 @@ class AdminApp:
     def _brand(self) -> ft.Control:
         return ft.Row(
             [
-                ft.Container(
-                    content=ft.Text(
-                        "CX",
-                        size=15,
-                        weight=ft.FontWeight.W_800,
-                        color=t.ON_BRAND,
-                        font_family=t.mono_font(),
-                    ),
-                    width=38,
-                    height=38,
-                    alignment=ft.Alignment.CENTER,
-                    bgcolor=t.BRAND,
-                    border_radius=ft.BorderRadius.all(10),
-                ),
+                self._brand_mark(),
                 ft.Column(
                     [
                         ft.Text(
@@ -133,6 +123,33 @@ class AdminApp:
             ],
             spacing=11,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+
+    def _brand_mark(self) -> ft.Control:
+        """Logo de la marca, con la caja ``CX`` como respaldo."""
+        source = t.logo_source()
+        if source:
+            return ft.Image(
+                src=source,
+                width=40,
+                height=40,
+                fit=ft.BoxFit.CONTAIN,
+                semantics_label="CHMODX",
+            )
+
+        return ft.Container(
+            content=ft.Text(
+                "CX",
+                size=15,
+                weight=ft.FontWeight.W_800,
+                color=t.ON_BRAND,
+                font_family=t.mono_font(),
+            ),
+            width=38,
+            height=38,
+            alignment=ft.Alignment.CENTER,
+            bgcolor=t.BRAND,
+            border_radius=ft.BorderRadius.all(10),
         )
 
     def _header(self) -> ft.Control:
@@ -287,6 +304,12 @@ def run(*, web: bool = False, host: str = "127.0.0.1", port: int = 8560) -> None
         AdminApp(page, settings).mount()
 
     if web:
-        ft.run(main, view=ft.AppView.FLET_APP_WEB, host=host, port=port)
+        ft.run(
+            main,
+            view=ft.AppView.FLET_APP_WEB,
+            host=host,
+            port=port,
+            assets_dir=str(t.ASSETS_DIR),
+        )
     else:
-        ft.run(main)
+        ft.run(main, assets_dir=str(t.ASSETS_DIR))

@@ -20,6 +20,7 @@ ADMCHMOD/
 │   ├── supabase_api.py    # cliente REST
 │   ├── git_ops.py         # build + commit + push
 │   ├── tabs/              # editor · contenido · analíticas · leads · publicación
+│   ├── assets/            # logo.png, icon.png (logo recortado) y logo.ico
 │   └── sql/               # esquema y migración de Supabase
 └── sync.sh                # sincroniza con el proyecto web
 ```
@@ -75,6 +76,13 @@ repositorio no contiene el sitio: el editor y la biblioteca necesitan esa ruta.
 | **Analíticas** | Visitas, conversión y rendimiento de los CTA |
 | **Leads** | Correos capturados, con exportación a CSV |
 | **Publicación** | `build.py` + `git add` + `commit` + `push` |
+
+## Logo e icono
+
+La cabecera usa `admin/assets/icon.png` (el logo recortado, sin el margen
+transparente) y `admin/assets/logo.ico` como icono de ventana en Windows.
+`logo.png` es el original: si se reemplaza, hay que regenerar los derivados
+con el fragmento que aparece en `admin/README.md`, sección «Identidad visual».
 
 ## Sincronizar este espejo
 

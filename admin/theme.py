@@ -33,7 +33,15 @@ TELEGRAM = "#2AABEE"
 
 ON_BRAND = "#00130A"
 
-FONT_DIR = Path(__file__).resolve().parent / "assets" / "fonts"
+ASSETS_DIR = Path(__file__).resolve().parent / "assets"
+FONT_DIR = ASSETS_DIR / "fonts"
+
+# ``logo.png`` es el original; ``icon.png`` es el mismo dibujo recortado
+# (sin el margen transparente) y ``logo.ico`` la versión para el icono de
+# ventana de Windows.
+LOGO_FILE = ASSETS_DIR / "logo.png"
+ICON_FILE = ASSETS_DIR / "icon.png"
+LOGO_ICO = ASSETS_DIR / "logo.ico"
 
 DISPLAY_FONT = "Space Grotesk"
 BODY_FONT = "Inter"
@@ -63,6 +71,25 @@ def register_fonts(page: ft.Page) -> dict[str, str]:
     if registered:
         page.fonts = {**registered}
     return registered
+
+
+def logo_source() -> str | None:
+    """Nombre del logo dentro de ``assets_dir``, o ``None`` si no existe.
+
+    Se prefiere ``icon.png`` (el dibujo recortado, sin el margen transparente
+    del original) y se usa ``logo.png`` como respaldo. Se devuelve el nombre
+    relativo, no la ruta: así funciona igual en la ventana de escritorio y en
+    el modo web, donde Flet sirve ``admin/assets`` como raíz de recursos.
+    """
+    for path in (ICON_FILE, LOGO_FILE):
+        if path.is_file():
+            return path.name
+    return None
+
+
+def logo_icon() -> str | None:
+    """Ruta del icono de ventana (``.ico``), solo si existe."""
+    return str(LOGO_ICO) if LOGO_ICO.is_file() else None
 
 
 def body_font() -> str | None:
