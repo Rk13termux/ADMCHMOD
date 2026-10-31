@@ -1,0 +1,7 @@
+# Panel de Administración Pro · CHMODX
+# Instala con: python3 -m pip install -r admin/requirements.txt
+
+flet==0.85.3
+flet-desktop==0.85.3
+httpx==0.28.1
+python-dotenv==1.2.2

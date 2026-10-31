@@ -1,0 +1,20 @@
+# Credenciales y datos locales
+.env
+admin/.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Salidas del panel
+exports/
+admin/exports/
+
+# Tipografías locales (binarios con licencia propia)
+admin/assets/fonts/*.ttf
+
+# Sistema
+.DS_Store
+Thumbs.db
