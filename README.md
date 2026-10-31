@@ -77,6 +77,15 @@ repositorio no contiene el sitio: el editor y la biblioteca necesitan esa ruta.
 | **Leads** | Correos capturados, con exportación a CSV |
 | **Publicación** | `build.py` + `git add` + `commit` + `push` |
 
+### Icono en la barra de aplicaciones (Linux)
+
+```bash
+python3 -m admin --install-icon
+```
+
+Instala el logo en el tema hicolor y un lanzador `com.appveyor.flet.desktop`
+para que la barra de tareas muestre el icono del panel.
+
 ## Logo e icono
 
 La cabecera usa `admin/assets/icon.png` (el logo recortado, sin el margen
