@@ -380,7 +380,7 @@ nombre y funciona igual en la ventana de escritorio y en `--web`.
 | Archivo | Uso |
 |---|---|
 | `logo.png` | Original que se coloca a mano. Es la fuente de los demás. |
-| `icon.png` | Recorte del original sin el margen transparente. Logo de la cabecera y `assets/icon.png` que usa `flet build` al empaquetar. |
+| `icon.png` | Recorte del original sin el margen transparente. Es el logo de la cabecera y el archivo que se copia como `assets/icon.png` al empaquetar con `flet build`. |
 | `logo.ico` | Icono de la ventana en Windows (`page.window.icon`). |
 
 Si se cambia `logo.png`, hay que regenerar los derivados:
