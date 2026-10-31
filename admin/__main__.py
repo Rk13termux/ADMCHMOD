@@ -74,6 +74,17 @@ def check() -> int:
     if not ok:
         notes.append(f"OmniRoute: {detail}")
 
+    from . import desktop
+
+    if desktop.supported():
+        print("\nEscritorio")
+        print(f"  sesión          {desktop.session()}")
+        print(f"  icono           {'instalado' if desktop.is_installed() else 'sin instalar'}")
+        if not desktop.is_installed():
+            notes.append(
+                "Icono del escritorio: ejecuta python3 -m admin --install-icon"
+            )
+
     print("\nPlantilla maestra")
     draft = ContentDraft(
         kind="repos",
@@ -124,6 +135,54 @@ def check() -> int:
     return 0
 
 
+def install_icon() -> int:
+    """Instala el icono y el lanzador del escritorio."""
+    from . import desktop
+
+    print(f"CHMODX · icono del escritorio ({desktop.session()})\n")
+
+    if not desktop.supported():
+        print("Solo disponible en Linux.")
+        print("En Windows el icono lo carga page.window.icon desde logo.ico.")
+        return 1
+
+    settings = load_settings()
+    try:
+        result = desktop.install(settings.project_root)
+    except (OSError, ValueError) as exc:
+        print(f"  ✕ {exc}")
+        return 1
+
+    icons = result["icons"]
+    caches = result["caches"]
+    print(f"  lanzador        {result['desktop']}")
+    print(f"  iconos          {len(icons)} tamaños en {desktop.icons_dir()}")
+    if caches:
+        print(f"  cachés          {', '.join(caches)}")
+    print("\nListo. Abre CHMODX desde el menú de aplicaciones o vuelve a iniciar")
+    print("el panel: la barra de tareas ya mostrará su icono.")
+    return 0
+
+
+def uninstall_icon() -> int:
+    """Quita el icono y el lanzador instalados."""
+    from . import desktop
+
+    if not desktop.supported():
+        print("Solo disponible en Linux.")
+        return 1
+
+    if not desktop.is_installed():
+        print("No hay nada que quitar: el icono no está instalado.")
+        return 0
+
+    removed = desktop.uninstall()
+    print(f"CHMODX · icono del escritorio ({desktop.session()})\n")
+    print(f"  eliminados      {len(removed)} archivos")
+    print("\nHecho. La barra de tareas volverá al icono de Flet.")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m admin",
@@ -139,12 +198,28 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="sirve la interfaz en el navegador en lugar de abrir una ventana",
     )
+    parser.add_argument(
+        "--install-icon",
+        action="store_true",
+        help="instala el icono y el lanzador del escritorio (Linux)",
+    )
+    parser.add_argument(
+        "--uninstall-icon",
+        action="store_true",
+        help="quita el icono y el lanzador instalados",
+    )
     parser.add_argument("--host", default="127.0.0.1", help="host para el modo web")
     parser.add_argument("--port", type=int, default=8560, help="puerto para el modo web")
     args = parser.parse_args(argv)
 
     if args.check:
         return check()
+
+    if args.install_icon:
+        return install_icon()
+
+    if args.uninstall_icon:
+        return uninstall_icon()
 
     from .app import run
 

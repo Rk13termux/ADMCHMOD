@@ -285,6 +285,34 @@ Reglas:
   el bloque `cta-end` que genera `scripts/build.py` y con las tarjetas de
   contenido relacionado. Una sola llamada a la acción por página.
 
+### Icono en la barra de aplicaciones (Linux)
+
+El panel corre sobre el cliente de escritorio de Flet, cuyo ``app_id`` es
+``com.appveyor.flet``. En Wayland y en X11 la barra de tareas resuelve el
+icono a partir de un archivo ``com.appveyor.flet.desktop`` en
+``~/.local/share/applications``. El panel puede instalarlo él mismo:
+
+```bash
+python3 -m admin --install-icon
+```
+
+Hace cuatro cosas:
+
+1. Copia el logo en ``~/.local/share/icons/hicolor/<tamaño>x<tamaño>/apps/chmodx-panel.png`` (8 tamaños de 16 a 512 px).
+2. Crea el lanzador ``com.appveyor.flet.desktop`` con ``Icon=chmodx-panel`` y ``StartupWMClass=com.appveyor.flet``.
+3. Refresca la caché de iconos y la base de datos de lanzadores.
+4. A partir de ahí, la barra muestra el logo cada vez que arranques el panel, aunque lo inicies desde la terminal.
+
+Para quitarlo:
+
+```bash
+python3 -m admin --uninstall-icon
+```
+
+En Windows no hace falta: ``page.window.icon`` carga ``logo.ico``. En macOS el icono lo pone el paquete generado por ``flet build``.
+
+---
+
 ### Analíticas y Leads
 
 Ambas pestañas consultan Supabase al abrirse. Si no hay configuración,
@@ -355,6 +383,7 @@ admin/
 ├── analytics.py       # agregación de métricas (funciones puras)
 ├── supabase_api.py    # cliente REST (httpx)
 ├── git_ops.py         # subprocess seguro, estado del repo, publicación
+├── desktop.py        # icono y lanzador del escritorio (Linux)
 ├── tabs/
 │   ├── editor.py
 │   ├── content.py
@@ -427,7 +456,9 @@ Sin `logo.png` ni `icon.png` la cabecera vuelve a la caja `CX`, y sin
 
 ```bash
 python3 -m admin --check    # valida configuración, plantilla e interfaz
+python3 -m admin --install-icon    # icono y lanzador del escritorio (Linux)
 ```
 
 El comando construye todo el árbol de controles de las cinco pestañas sin
 abrir ventana: sirve como prueba de humo en cualquier equipo o en CI.
+Si el lanzador no está instalado, ``--check`` lo avisa.
