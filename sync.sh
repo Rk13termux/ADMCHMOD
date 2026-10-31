@@ -4,6 +4,8 @@
 #   ./sync.sh /ruta/a/LANDINGPYTHON/admin
 #
 # Nunca copia .env, caché ni exportaciones.
+# El token se toma de CHMODX_GIT_TOKEN o del .env del proyecto de origen, y
+# se usa con un credential.helper efímero: no queda en la URL ni en .git/config.
 set -euo pipefail
 
 SRC="${1:-../LANDINGPYTHON/admin}"
@@ -37,4 +39,19 @@ if git diff --cached --quiet; then
 fi
 
 git commit -m "sync: $(date '+%Y-%m-%d %H:%M')"
-git push
+
+# Token: primero el entorno, luego el .env del proyecto de origen.
+TOKEN="${CHMODX_GIT_TOKEN:-}"
+if [ -z "$TOKEN" ] && [ -f "$SRC/.env" ]; then
+    TOKEN="$(sed -n 's/^CHMODX_GIT_TOKEN=//p' "$SRC/.env" | head -1 | tr -d '"'"'"' \r')"
+fi
+
+if [ -n "$TOKEN" ]; then
+    CHMODX_GIT_TOKEN="$TOKEN" GIT_TERMINAL_PROMPT=0 git \
+        -c credential.helper='' \
+        -c credential.helper='!f() { echo username=x-access-token; echo "password=$CHMODX_GIT_TOKEN"; }; f' \
+        push
+else
+    echo "Aviso: sin CHMODX_GIT_TOKEN; se usa la configuración de Git del sistema." >&2
+    git push
+fi
