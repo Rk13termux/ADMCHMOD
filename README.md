@@ -84,6 +84,9 @@ transparente) y `admin/assets/logo.ico` como icono de ventana en Windows.
 `logo.png` es el original: si se reemplaza, hay que regenerar los derivados
 con el fragmento que aparece en `admin/README.md`, sección «Identidad visual».
 
+Al empaquetar con `flet build`, copia `admin/assets/icon.png` como
+`assets/icon.png` en la raíz de compilación: es el icono que toma el paquete.
+
 ## Sincronizar este espejo
 
 Cuando cambies el panel en el proyecto web:
