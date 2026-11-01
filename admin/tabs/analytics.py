@@ -192,7 +192,7 @@ class AnalyticsTab:
                     hint="identificados por visitor_id",
                 ),
                 widgets.kpi(
-                    "Vistas a la academia",
+                    "Vistas al curso",
                     f"{summary.academy_views:,}".replace(",", "."),
                     icon=ft.Icons.SCHOOL,
                     accent=t.YELLOW,
@@ -203,7 +203,7 @@ class AnalyticsTab:
                     f"{summary.conversion:.1f}%",
                     icon=ft.Icons.TRENDING_UP,
                     accent=t.BRAND,
-                    hint="academia / total",
+                    hint="curso / total",
                 ),
             ],
             spacing=12,
@@ -321,7 +321,7 @@ class AnalyticsTab:
                             ft.Text(
                                 "Aún no hay datos de atribución. Ejecuta "
                                 "admin/sql/002_tracking.sql para medir qué artículo "
-                                "y qué CTA llevan a la academia.",
+                                "y qué CTA llevan al curso.",
                                 size=12,
                                 color=t.MUTED,
                                 expand=True,
@@ -361,7 +361,7 @@ class AnalyticsTab:
                     ft.Row(
                         [
                             ft.Text(
-                                "Qué CTA lleva a la academia",
+                                "Qué CTA lleva al curso",
                                 size=13,
                                 weight=ft.FontWeight.W_700,
                                 color=t.TEXT,

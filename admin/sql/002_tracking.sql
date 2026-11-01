@@ -3,7 +3,7 @@
 --
 -- Ejecuta este archivo DESPUÉS de schema.sql, en Supabase → SQL Editor.
 -- Sin estas columnas la web sigue registrando visitas, pero sin UTM:
--- no se podrá saber qué artículo o qué CTA lleva a la academia.
+-- no se podrá saber qué artículo o qué CTA lleva al curso.
 -- ===========================================================================
 
 alter table public.page_views

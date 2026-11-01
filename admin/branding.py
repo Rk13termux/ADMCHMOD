@@ -2,7 +2,7 @@
 
 Cualquier contenido creado desde el panel pasa por aquí: mismo orden de
 secciones, mismo tono, mismos avisos y el mismo cierre con llamado a la
-Academia. Así el sitio no se degrada con el tiempo.
+Curso. Así el sitio no se degrada con el tiempo.
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ CATEGORIES: dict[str, Category] = {
         accent="#00E5FF",
         closing=(
             "Copiar un script resuelve una tarea. Entender cada línea te permite "
-            "resolver la siguiente. La Academia Python Pro construye esa base paso a paso."
+            "resolver la siguiente. El Curso de Python 3 de 0 a Master construye esa base paso a paso."
         ),
     ),
     "ciberseguridad": Category(
@@ -39,7 +39,7 @@ CATEGORIES: dict[str, Category] = {
         icon="shield",
         accent="#FFD43B",
         closing=(
-            "Practicar comandos sueltos no te prepara para una auditoría. En la academia "
+            "Practicar comandos sueltos no te prepara para una auditoría. En el Curso de Python 3 de 0 a Master "
             "trabajas alcance, evidencia y reporte con método."
         ),
     ),
@@ -49,7 +49,7 @@ CATEGORIES: dict[str, Category] = {
         icon="terminal",
         accent="#00E676",
         closing=(
-            "Tu Android puede ser un laboratorio completo. En la academia montamos el "
+            "Tu Android puede ser un laboratorio completo. En el Curso de Python 3 de 0 a Master montamos el "
             "entorno, los proyectos y el flujo de trabajo desde cero."
         ),
     ),

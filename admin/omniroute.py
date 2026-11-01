@@ -70,7 +70,7 @@ El campo "body" debe seguir esta estructura de secciones, en este orden:
 ## Cómo ejecutarlo
 ## Errores frecuentes
 
-No incluyas la sección "Siguiente paso", ni enlaces a la academia, ni el front
+No incluyas la sección "Siguiente paso", ni enlaces al curso, ni el front
 matter: el sistema los añade después.
 """
 
